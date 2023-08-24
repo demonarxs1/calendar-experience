@@ -12,21 +12,28 @@ function renderProgress() {
   const progress = Math.min(((allPeriod - curProgress) * 100 / allPeriod), 100);
 
   progressEl.style.width = `${progress.toFixed(4)}%`;
-  progressNumberEl.innerHTML = `${progress.toFixed(4)}%`;
+  progressNumberEl.innerHTML = `${progress.toFixed(6)}%`;
 }
 
 const textareaEl = document.querySelector('#textarea');
 function renderTextState() {
   const currentDate = new Date();
-  const days = Math.ceil((finishDate - currentDate) / 1000 / 60 / 60 / 24); // s / m / h / d
-  const hours = Math.ceil((finishDate - currentDate) / 1000 / 60 / 60 % 24); // s / m / h / d
-  const minutes = Math.ceil((finishDate - currentDate) / 1000 / 60 % 60); // s / m / h / d
-  const seconds = Math.ceil((finishDate - currentDate) / 1000 % 60); // s / m / h / d
-  textareaEl.innerHTML = `Осталось: ${days} дней, ${hours} часов, ${minutes} минут, ${seconds} секунд`
+  const daysLeft = Math.ceil((finishDate - currentDate) / 1000 / 60 / 60 / 24); // s / m / h / d
+  const hoursLeft = Math.ceil((finishDate - currentDate) / 1000 / 60 / 60 % 24); // s / m / h / d
+  const minutesLeft = Math.ceil((finishDate - currentDate) / 1000 / 60 % 60); // s / m / h / d
+  const secondsLeft = Math.ceil((finishDate - currentDate) / 1000 % 60); // s / m / h / d
+
+  const daysPassed = Math.ceil((currentDate - startDate) / 1000 / 60 / 60 / 24); // s / m / h / d
+  const hoursPassed = Math.ceil((currentDate - startDate) / 1000 / 60 / 60 % 24); // s / m / h / d
+  const minutesPassed = Math.ceil((currentDate - startDate) / 1000 / 60 % 60); // s / m / h / d
+  const secondsPassed = Math.ceil((currentDate - startDate) / 1000 % 60); // s / m / h / d
+  textareaEl.innerHTML = `Осталось: ${daysLeft} дней, ${hoursLeft} часов, ${minutesLeft} минут, ${secondsLeft} секунд;
+Прошло: ${daysPassed} дней, ${hoursPassed} часов, ${minutesPassed} минут, ${secondsPassed} секунд;
+  `;
 }
 renderProgress();
 renderTextState();
 setInterval(() => {
   renderProgress();
   renderTextState();
-}, 10000);
+}, 1000);
