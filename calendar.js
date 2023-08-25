@@ -31,9 +31,32 @@ function renderTextState() {
 Прошло: ${daysPassed} дней, ${hoursPassed} часов, ${minutesPassed} минут, ${secondsPassed} секунд;
   `;
 }
+
+const specialDays = [10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 100];
+const specialEl = document.querySelector('#special');
+
+function renderSpecialDays() {
+  const dates = specialDays.map(it => {
+    const time = allPeriod * it / 100;
+    const date = startDate.getTime() + time;
+
+    const currentDate = new Date();
+
+    const daysLeft = Math.ceil((date - currentDate) / 1000 / 60 / 60 / 24); // s / m / h / d
+    const hoursLeft = Math.ceil((date - currentDate) / 1000 / 60 / 60 % 24); // s / m / h / d
+    const minutesLeft = Math.ceil((date - currentDate) / 1000 / 60 % 60); // s / m / h / d
+    const secondsLeft = Math.ceil((date - currentDate) / 1000 % 60); // s / m / h / d
+    return `До ${it}% осталось: ${daysLeft} дней, ${hoursLeft} часов, ${minutesLeft} минут, ${secondsLeft} секунд;`
+  }).join('\n');
+
+  specialEl.innerHTML = dates;
+}
+
 renderProgress();
 renderTextState();
+renderSpecialDays();
 setInterval(() => {
   renderProgress();
   renderTextState();
+  renderSpecialDays();
 }, 1000);
