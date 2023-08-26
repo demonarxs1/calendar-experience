@@ -21,12 +21,12 @@ function getRemainder(date, invert) {
     hours,
     minutes,
     seconds,
-    finished: timeLeft === 0,
+    isFinished: timeLeft === 0,
   }
 }
 
 function getRemainderString(time) {
-  return `${time.days} дней, ${time.hours} часов, ${time.minutes} минут, ${time.seconds} секунд;`
+  return `${time.days} дней, ${time.hours} часов, ${time.minutes} минут, ${time.seconds} секунд;${time.isFinished ? '✅' : ''}`
 }
 
 function renderProgress() {
