@@ -29,10 +29,11 @@ function getRemainderString(time) {
   return `${time.days} дней, ${time.hours} часов, ${time.minutes} минут, ${time.seconds} секунд;${time.isFinished ? '✅' : ''}`
 }
 
-function renderProgress() {
-  const curProgress = finishDate - new Date();
+function renderProgress(date) {
+  const curProgress = date - new Date();
+  const period = date - startDate;
 
-  const progress = Math.min(((allPeriod - curProgress) * 100 / allPeriod), 100);
+  const progress = Math.min(((period - curProgress) * 100 / period), 100);
 
   progressEl.style.width = `${progress.toFixed(4)}%`;
   progressNumberEl.innerHTML = `${progress.toFixed(6)}%`;
@@ -64,11 +65,11 @@ function renderSpecialDays() {
   specialEl.innerHTML = dates;
 }
 
-renderProgress();
+renderProgress(finishDate);
 renderTextState();
 renderSpecialDays();
 setInterval(() => {
-  renderProgress();
+  renderProgress(finishDate);
   renderTextState();
   renderSpecialDays();
 }, 1000);
