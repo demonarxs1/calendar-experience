@@ -6,6 +6,29 @@ const allPeriod = finishDate - startDate;
 const progressEl = document.querySelector('#progress');
 const progressNumberEl = document.querySelector('#progressNumber');
 
+function getRemainder(date, invert) {
+  const currentDate = new Date();
+
+  const timeLeft = Math.max(invert ? (currentDate - date) : (date - currentDate), 0);
+
+  const days = Math.floor(timeLeft / 1000 / 60 / 60 / 24); // s / m / h / d
+  const hours = Math.floor(timeLeft / 1000 / 60 / 60 % 24); // s / m / h / d
+  const minutes = Math.floor(timeLeft / 1000 / 60 % 60); // s / m / h / d
+  const seconds = Math.floor(timeLeft / 1000 % 60); // s / m / h / d
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    finished: timeLeft === 0,
+  }
+}
+
+function getRemainderString(time) {
+  return `${time.days} дней, ${time.hours} часов, ${time.minutes} минут, ${time.seconds} секунд;`
+}
+
 function renderProgress() {
   const curProgress = finishDate - new Date();
 
@@ -16,19 +39,13 @@ function renderProgress() {
 }
 
 const textareaEl = document.querySelector('#textarea');
-function renderTextState() {
-  const currentDate = new Date();
-  const daysLeft = Math.ceil((finishDate - currentDate) / 1000 / 60 / 60 / 24); // s / m / h / d
-  const hoursLeft = Math.ceil((finishDate - currentDate) / 1000 / 60 / 60 % 24); // s / m / h / d
-  const minutesLeft = Math.ceil((finishDate - currentDate) / 1000 / 60 % 60); // s / m / h / d
-  const secondsLeft = Math.ceil((finishDate - currentDate) / 1000 % 60); // s / m / h / d
 
-  const daysPassed = Math.ceil((currentDate - startDate) / 1000 / 60 / 60 / 24); // s / m / h / d
-  const hoursPassed = Math.ceil((currentDate - startDate) / 1000 / 60 / 60 % 24); // s / m / h / d
-  const minutesPassed = Math.ceil((currentDate - startDate) / 1000 / 60 % 60); // s / m / h / d
-  const secondsPassed = Math.ceil((currentDate - startDate) / 1000 % 60); // s / m / h / d
-  textareaEl.innerHTML = `Осталось: ${daysLeft} дней, ${hoursLeft} часов, ${minutesLeft} минут, ${secondsLeft} секунд;
-Прошло: ${daysPassed} дней, ${hoursPassed} часов, ${minutesPassed} минут, ${secondsPassed} секунд;
+function renderTextState() {
+  const leftTime = getRemainder(finishDate)
+  const passedTime = getRemainder(startDate, true);
+
+  textareaEl.innerHTML = `Осталось: ${getRemainderString(leftTime)}
+Прошло: ${getRemainderString(passedTime)}
   `;
 }
 
@@ -40,13 +57,8 @@ function renderSpecialDays() {
     const time = allPeriod * it / 100;
     const date = startDate.getTime() + time;
 
-    const currentDate = new Date();
-
-    const daysLeft = Math.ceil((date - currentDate) / 1000 / 60 / 60 / 24); // s / m / h / d
-    const hoursLeft = Math.ceil((date - currentDate) / 1000 / 60 / 60 % 24); // s / m / h / d
-    const minutesLeft = Math.ceil((date - currentDate) / 1000 / 60 % 60); // s / m / h / d
-    const secondsLeft = Math.ceil((date - currentDate) / 1000 % 60); // s / m / h / d
-    return `До ${it}% осталось: ${daysLeft} дней, ${hoursLeft} часов, ${minutesLeft} минут, ${secondsLeft} секунд;`
+    const leftTime = getRemainder(date)
+    return `До ${it}% осталось: ${getRemainderString(leftTime)}`
   }).join('\n');
 
   specialEl.innerHTML = dates;
