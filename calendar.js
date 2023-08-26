@@ -6,6 +6,8 @@ const allPeriod = finishDate - startDate;
 const progressEl = document.querySelector('#progress');
 const progressNumberEl = document.querySelector('#progressNumber');
 
+let showProgressFor = finishDate;
+
 function getRemainder(date, invert) {
   const currentDate = new Date();
 
@@ -62,6 +64,11 @@ specialDays.forEach(it => {
 })
 graphTypeSelector.value = 100;
 
+graphTypeSelector.addEventListener('change', (e) => {
+  const time = allPeriod * (+(e.target.value)) / 100;
+  const date = startDate.getTime() + time;
+  showProgressFor = date;
+});
 
 function renderSpecialDays() {
   const dates = specialDays.map(it => {
@@ -75,11 +82,11 @@ function renderSpecialDays() {
   specialEl.innerHTML = dates;
 }
 
-renderProgress(finishDate);
+renderProgress(showProgressFor);
 renderTextState();
 renderSpecialDays();
 setInterval(() => {
-  renderProgress(finishDate);
+  renderProgress(showProgressFor);
   renderTextState();
   renderSpecialDays();
 }, 1000);
