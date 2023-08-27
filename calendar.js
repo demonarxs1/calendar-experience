@@ -1,11 +1,13 @@
-import {allPeriod, finishDate, startDate} from "./consts.js";
+import {allPeriod, startDate} from "./consts.js";
 import {renderProgress} from "./progressBar.js";
 import {renderTextState} from "./progressText.js";
 import {renderSpecialDays, specialDays} from "./specialDays.js";
 import {renderDayProgress} from "./dayProgressBar.js";
 import {getPercent, setPercent} from "./percentStore.js";
 
-let showProgressFor = finishDate;
+const time = allPeriod * (getPercent()) / 100;
+const date = startDate.getTime() + time
+let showProgressFor = date;
 
 const graphTypeSelector = document.querySelector('#graphType');
 
