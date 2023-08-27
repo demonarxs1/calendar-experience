@@ -3,6 +3,7 @@ import {renderProgress} from "./progressBar.js";
 import {renderTextState} from "./progressText.js";
 import {renderSpecialDays, specialDays} from "./specialDays.js";
 import {renderDayProgress} from "./dayProgressBar.js";
+import {getPercent, setPercent} from "./percentStore.js";
 
 let showProgressFor = finishDate;
 
@@ -14,9 +15,12 @@ specialDays.forEach(it => {
   option.value = it;
   graphTypeSelector.appendChild(option);
 })
-graphTypeSelector.value = 100;
+graphTypeSelector.value = getPercent();
 
 graphTypeSelector.addEventListener('change', (e) => {
+  const newValue = +(e.target.value);
+  setPercent(newValue);
+
   const time = allPeriod * (+(e.target.value)) / 100;
   const date = startDate.getTime() + time;
   showProgressFor = date;
