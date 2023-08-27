@@ -1,3 +1,5 @@
+import {isMobile} from "./consts.js";
+
 export function getRemainder(date, invert) {
   const currentDate = new Date();
 
@@ -18,5 +20,5 @@ export function getRemainder(date, invert) {
 }
 
 export function getRemainderString(time) {
-  return `${time.days} дней, ${time.hours} часов, ${time.minutes} минут, ${time.seconds} секунд;${time.isFinished ? '✅' : ''}`
+  return isMobile? `${time.days} д., ${time.hours} ч., ${time.minutes} м., ${time.seconds} с.;${time.isFinished ? '✅' : ''}` : `${time.days} дней, ${time.hours} часов, ${time.minutes} минут, ${time.seconds} секунд;${time.isFinished ? '✅' : ''}`;
 }

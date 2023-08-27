@@ -37,4 +37,5 @@ body {
 .textarea,
 .special {
     white-space: break-spaces;
+    font-size: 16px;
 }
