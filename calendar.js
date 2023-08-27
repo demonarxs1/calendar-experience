@@ -21,11 +21,16 @@ graphTypeSelector.addEventListener('change', (e) => {
   showProgressFor = date;
 });
 
-renderProgress(showProgressFor);
-renderTextState();
-renderSpecialDays();
-setInterval(() => {
+requestAnimationFrame(() => {
   renderProgress(showProgressFor);
   renderTextState();
   renderSpecialDays();
+})
+
+setInterval(() => {
+  requestAnimationFrame(() => {
+    renderProgress(showProgressFor);
+    renderTextState();
+    renderSpecialDays();
+  })
 }, 1000);
