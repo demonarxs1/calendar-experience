@@ -2,6 +2,7 @@ import {allPeriod, finishDate, startDate} from "./consts.js";
 import {renderProgress} from "./progressBar.js";
 import {renderTextState} from "./progressText.js";
 import {renderSpecialDays, specialDays} from "./specialDays.js";
+import {renderDayProgress} from "./dayProgressBar.js";
 
 let showProgressFor = finishDate;
 
@@ -23,6 +24,7 @@ graphTypeSelector.addEventListener('change', (e) => {
 
 requestAnimationFrame(() => {
   renderProgress(showProgressFor);
+  renderDayProgress()
   renderTextState();
   renderSpecialDays();
 })
@@ -30,6 +32,7 @@ requestAnimationFrame(() => {
 setInterval(() => {
   requestAnimationFrame(() => {
     renderProgress(showProgressFor);
+    renderDayProgress()
     renderTextState();
     renderSpecialDays();
   })
