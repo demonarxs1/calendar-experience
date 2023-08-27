@@ -10,6 +10,7 @@ body {
     height: 50px;
     background: red;
     border: 1px solid black;
+    margin-bottom: 16px;
 }
 
 .progress {
@@ -38,4 +39,8 @@ body {
 .special {
     white-space: break-spaces;
     font-size: 16px;
+}
+
+.progress-control {
+    margin-bottom: 16px;
 }
