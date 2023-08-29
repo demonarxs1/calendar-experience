@@ -1,5 +1,7 @@
-fetch('./quotes.json').then(it => it.json()).then(it => {
+const quotesButton = document.querySelector('#nextQuotes');
 
+fetch('./quotes.json').then(it => it.json()).then(it => {
+  let timer = null;
   const renderQuote = () => {
     const quoteEl = document.querySelector('#quote');
     const authorEl = document.querySelector('#author');
@@ -11,5 +13,13 @@ fetch('./quotes.json').then(it => it.json()).then(it => {
   };
 
   renderQuote();
-  setInterval(() => renderQuote(), 300000)
+  timer = setInterval(() => renderQuote(), 300000)
+
+  quotesButton.addEventListener('click', () => {
+    clearInterval(timer);
+    renderQuote();
+    timer = setInterval(() => renderQuote(), 300000)
+  })
+
+
 });
