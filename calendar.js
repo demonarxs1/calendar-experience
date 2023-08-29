@@ -4,6 +4,7 @@ import {renderTextState} from "./progressText.js";
 import {renderSpecialDays, specialDays} from "./specialDays.js";
 import {renderDayProgress} from "./dayProgressBar.js";
 import {getPercent, setPercent} from "./percentStore.js";
+import './quotes.js';
 
 const time = allPeriod * (getPercent()) / 100;
 const date = startDate.getTime() + time
