@@ -72,3 +72,12 @@ blockquote p::before {
 blockquote p::after {
     content: '\201D';
 }
+
+.barrat-test {
+
+}
+
+.barrat-test .barrat-question {
+    margin-bottom: 16px;
+}
+

@@ -20,6 +20,4 @@ fetch('./quotes.json').then(it => it.json()).then(it => {
     renderQuote();
     timer = setInterval(() => renderQuote(), 300000)
   })
-
-
 });
