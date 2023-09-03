@@ -1,3 +1,4 @@
+const minusesFor = new Set([4, 5, 13, 14, 15, 16, 17, 19, 20, 21, 26]);
 const questions = [
   'Я ерзаю во время представлений и лекций',
   'Я неусидчив (-а) в театре или на лекции',
@@ -38,63 +39,79 @@ const answers = [
   'всегда или почти всегда'
 ]
 
-const testEl = document.querySelector('#barratTest');
+class BarratTest extends HTMLElement {
+  constructor() {
+    super();
 
-function renderTest() {
-  const questionEls = questions.map((it, index) => {
-    const questionNumber = index + 1;
-    const question = document.createElement('div');
-    question.classList.add('barrat-question');
+    const shadow = this.attachShadow({ mode: "open" });
 
-    const boldQuestion = document.createElement('b');
-    boldQuestion.innerHTML = questionNumber + '. ' + it + ':';
+    const questionEls = questions.map((it, index) => {
+      const questionNumber = index + 1;
+      const question = document.createElement('div');
+      question.classList.add('barrat-question');
 
-    question.append(boldQuestion)
+      const boldQuestion = document.createElement('b');
+      boldQuestion.innerHTML = questionNumber + '. ' + it + ':';
+
+      question.append(boldQuestion)
 
 
-    const answerBlock = answers.map((it, i) => {
-      const radio = document.createElement('input');
-      radio.type = 'radio';
-      radio.name = questionNumber.toString();
-      radio.value = (i + 1).toString();
+      const answerBlock = answers.map((it, i) => {
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = questionNumber.toString();
+        radio.value = (i + 1).toString();
 
-      const answer = document.createElement('span');
-      answer.innerHTML = it;
+        const answer = document.createElement('span');
+        answer.innerHTML = it;
 
-      const answerBlock = document.createElement('div');
+        const answerBlock = document.createElement('div');
 
-      answerBlock.append(radio);
-      answerBlock.append(answer);
+        answerBlock.append(radio);
+        answerBlock.append(answer);
 
-      return answerBlock;
-    })
+        return answerBlock;
+      })
 
-    question.append(...answerBlock);
+      question.append(...answerBlock);
 
-    return question;
-  });
+      return question;
+    });
 
-  testEl.append(...questionEls);
+    const button = document.createElement("button");
+    button.textContent = 'Получить результат';
+
+    const result = document.createElement("div");
+    button.addEventListener('click', () => this.getResults(result))
+
+    const style = document.createElement("style");
+
+    style.textContent = `
+    .barrat-question {
+      margin-bottom: 16px;
+    }
+    `;
+
+    shadow.appendChild(style);
+    shadow.append(...questionEls);
+    shadow.appendChild(button);
+    shadow.appendChild(result);
+  }
+
+  getResults(resultEl) {
+    const results = questions.map((it, index) => {
+      const result = this.shadowRoot.querySelector(`input[name="${(index+1).toString()}"]:checked`)?.value;
+      return parseInt(result, 10);
+    }).reduce((acc, cur, index) => {
+      const number = index + 1;
+      acc += minusesFor.has(number) ? -1 * cur : cur;
+      return acc;
+    }, 0);
+
+    const finalResult = results + 55;
+
+    resultEl.innerHTML = 'Ваш результат:' + finalResult.toString();
+  }
 }
-renderTest();
 
-document.querySelector('#barratButton').addEventListener('click', () => {getResults()})
-
-const minusesFor = new Set([4, 5, 13, 14, 15, 16, 17, 19, 20, 21, 26]);
-
-function getResults() {
-  const results = questions.map((it, index) => {
-    const result = document.querySelector(`input[name="${(index+1).toString()}"]:checked`)?.value;
-    return parseInt(result, 10);
-  }).reduce((acc, cur, index) => {
-    const number = index + 1;
-    acc += minusesFor.has(number) ? -1 * cur : cur;
-    return acc;
-  }, 0);
-
-  const finalResult = results + 55;
-
-  document.querySelector('#barratTestResult').innerHTML = 'Ваш результат:' + finalResult.toString();
-}
-
-
+customElements.define("barrat-test", BarratTest);
