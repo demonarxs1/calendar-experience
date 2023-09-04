@@ -5,7 +5,7 @@ import {renderSpecialDays, specialDays} from "./specialDays.js";
 import {renderDayProgress} from "./dayProgressBar.js";
 import {getPercent, setPercent} from "./percentStore.js";
 import './quotes.js';
-// import './barratTest.js';
+import {renderLiyaState} from "./Liya.js";
 
 const time = allPeriod * (getPercent()) / 100;
 const date = startDate.getTime() + time
@@ -35,6 +35,7 @@ requestAnimationFrame(() => {
   renderDayProgress()
   renderTextState();
   renderSpecialDays();
+  renderLiyaState();
 })
 
 setInterval(() => {
@@ -43,5 +44,6 @@ setInterval(() => {
     renderDayProgress()
     renderTextState();
     renderSpecialDays();
+    renderLiyaState();
   })
 }, 1000);
