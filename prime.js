@@ -28,12 +28,30 @@ function getPrimeNumbers(limit) {
   return result;
 }
 
-primeButton.addEventListener('click', () => {
-  const limit = primeLimit.valueAsNumber;
-  console.log(limit);
+if (window.Worker) {
+    let worker = new Worker('./prime.worker.js')
+    primeButton.addEventListener('click', () => {
+        const limit = primeLimit.valueAsNumber;
+        console.log(limit, 'with worker');
+      
+        if (limit && limit > 0) {
+          worker.postMessage(limit);
+        }
 
-  if (limit && limit > 0) {
-    const res = getPrimeNumbers(limit).join('; ');
-    primeResult.textContent = res;
-  }
-});
+        worker.onmessage = function(e) {
+            primeResult.textContent = e.data;
+        }
+      });
+} else {
+    primeButton.addEventListener('click', () => {
+        const limit = primeLimit.valueAsNumber;
+        console.log(limit, 'without worker');
+      
+        if (limit && limit > 0) {
+          const res = getPrimeNumbers(limit).join('; ');
+          primeResult.textContent = res;
+        }
+      });
+}
+
+
