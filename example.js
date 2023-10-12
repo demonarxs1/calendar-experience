@@ -57,13 +57,17 @@ class BarratTest extends HTMLElement {
 
 
       const answerBlock = answers.map((it, i) => {
+        const id = `id:${index}-${i}`;
         const radio = document.createElement('input');
         radio.type = 'radio';
         radio.name = questionNumber.toString();
         radio.value = (i + 1).toString();
+        radio.id = id;
 
-        const answer = document.createElement('span');
+        const answer = document.createElement('label');
         answer.innerHTML = it;
+        answer.htmlFor = id;
+        answer.style.userSelect = 'none';
 
         const answerBlock = document.createElement('div');
 
